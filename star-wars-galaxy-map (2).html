@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Galáctico de Star Wars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-glow: #4da6ff;
+            --secondary-glow: #ff6b35;
+            --dark-bg: #0a0e1a;
+            --deep-space: #030508;
+            --panel-bg: rgba(10, 14, 26, 0.95);
+            --border-glow: rgba(77, 166, 255, 0.3);
+            --text-primary: #e8f4ff;
+            --text-secondary: #8ba3b8;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--deep-space);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Galaxy background image */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=2000&q=80'),
+                radial-gradient(ellipse at center, rgba(30, 50, 100, 0.3) 0%, var(--deep-space) 60%);
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: screen;
+            opacity: 0.7;
+            animation: galaxyPulse 20s ease-in-out infinite;
+        }
+
+        @keyframes galaxyPulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 0.85; }
+        }
+
+        .starfield::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, var(--deep-space) 85%);
+        }
+
+        .starfield::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 60% 70%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent),
+                radial-gradient(1px 1px at 80% 10%, white, transparent),
+                radial-gradient(2px 2px at 90% 60%, white, transparent),
+                radial-gradient(1px 1px at 33% 80%, white, transparent);
+            background-size: 200% 200%;
+            animation: twinkle 120s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--primary-glow), #ffffff, var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(77, 166, 255, 0.5);
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 20px rgba(77, 166, 255, 0.4)); }
+            50% { filter: brightness(1.2) drop-shadow(0 0 40px rgba(77, 166, 255, 0.6)); }
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+            letter-spacing: 0.3em;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Galaxy map */
+        .galaxy-map {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            height: 800px;
+            margin: 0 auto 3rem;
+            background: radial-gradient(ellipse at center, rgba(77, 166, 255, 0.08) 0%, transparent 70%);
+            border: 2px solid var(--border-glow);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 0 80px rgba(77, 166, 255, 0.3),
+                inset 0 0 80px rgba(77, 166, 255, 0.05);
+        }
+
+        .galaxy-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 200, 100, 0.5), rgba(255, 140, 80, 0.3), rgba(255, 107, 53, 0.15), transparent);
+            border-radius: 50%;
+            animation: coreGlow 4s ease-in-out infinite;
+            pointer-events: none;
+            filter: blur(2px);
+        }
+
+        @keyframes coreGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        }
+
+        /* Hyperspace routes */
+        .route {
+            position: absolute;
+            pointer-events: none;
+            stroke: rgba(77, 166, 255, 0.25);
+            stroke-width: 1.5;
+            stroke-dasharray: 5, 5;
+            animation: routeFlow 3s linear infinite;
+            filter: drop-shadow(0 0 3px rgba(77, 166, 255, 0.4));
+        }
+
+        @keyframes routeFlow {
+            to { stroke-dashoffset: -20; }
+        }
+
+        .route.major {
+            stroke: rgba(255, 200, 100, 0.35);
+            stroke-width: 2;
+            filter: drop-shadow(0 0 5px rgba(255, 200, 100, 0.5));
+        }
+
+        /* Planet markers */
+        .planet {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: planetPulse 3s ease-in-out infinite;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .planet::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140%;
+            height: 140%;
+            border-radius: 50%;
+            background: inherit;
+            filter: blur(10px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .planet:hover {
+            transform: scale(1.8);
+            z-index: 100;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .planet:hover::after {
+            content: attr(data-name);
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            padding: 0.5rem 1rem;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Planet types */
+        .planet.desert { background: linear-gradient(135deg, #f4a460, #d2691e); }
+        .planet.ice { background: linear-gradient(135deg, #b0e0e6, #4682b4); }
+        .planet.forest { background: linear-gradient(135deg, #228b22, #006400); }
+        .planet.urban { background: linear-gradient(135deg, #708090, #2f4f4f); }
+        .planet.ocean { background: linear-gradient(135deg, #1e90ff, #000080); }
+        .planet.volcanic { background: linear-gradient(135deg, #ff4500, #8b0000); }
+        .planet.gas { background: linear-gradient(135deg, #ffa500, #ff6347); }
+        .planet.swamp { background: linear-gradient(135deg, #556b2f, #2f4f2f); }
+
+        /* Planet info panel */
+        .planet-info {
+            position: fixed;
+            right: -100%;
+            top: 0;
+            width: 500px;
+            height: 100vh;
+            background: var(--panel-bg);
+            border-left: 2px solid var(--border-glow);
+            padding: 0;
+            overflow-y: auto;
+            transition: right 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            box-shadow: -15px 0 80px rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(15px);
+        }
+
+        .planet-info.active {
+            right: 0;
+        }
+
+        .planet-info::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .planet-info::-webkit-scrollbar-track {
+            background: rgba(10, 14, 26, 0.5);
+        }
+
+        .planet-info::-webkit-scrollbar-thumb {
+            background: var(--primary-glow);
+            border-radius: 4px;
+        }
+
+        .close-btn {
+            position: fixed;
+            top: 1.5rem;
+            right: 520px;
+            width: 45px;
+            height: 45px;
+            background: var(--panel-bg);
+            border: 2px solid var(--border-glow);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            opacity: 0;
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .planet-info.active + .close-btn {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .close-btn:hover {
+            background: var(--primary-glow);
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .planet-hero-image {
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            border-bottom: 2px solid var(--border-glow);
+        }
+
+        .planet-hero-image::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--panel-bg));
+        }
+
+        .planet-content-wrapper {
+            padding: 2rem;
+        }
+
+        .planet-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-glow);
+        }
+
+        .planet-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            margin-bottom: 0.7rem;
+            color: var(--primary-glow);
+            text-shadow: 0 0 25px rgba(77, 166, 255, 0.6);
+            text-transform: uppercase;
+        }
+
+        .planet-region {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        .planet-visual {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-glow);
+        }
+
+        .planet-sphere {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: planetRotate 20s linear infinite;
+        }
+
+        @keyframes planetRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .info-section {
+            margin-bottom: 2rem;
+        }
+
+        .info-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--secondary-glow);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .info-item {
+            padding: 0.8rem;
+            background: rgba(77, 166, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(77, 166, 255, 0.15);
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .info-text {
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .mini-map {
+            width: 100%;
+            height: 200px;
+            background: rgba(10, 14, 26, 0.7);
+            border: 2px solid var(--border-glow);
+            border-radius: 12px;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(77, 166, 255, 0.1);
+        }
+
+        .mini-map-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .mini-map-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(77, 166, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(77, 166, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.5;
+        }
+
+        /* Legend */
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 2.5rem;
+            background: var(--panel-bg);
+            border: 2px solid var(--border-glow);
+            border-radius: 15px;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .legend-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .legend-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--secondary-glow);
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .legend-color {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .legend-line {
+            width: 30px;
+            height: 2px;
+            flex-shrink: 0;
+        }
+
+        .legend-label {
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .galaxy-map {
+                height: 500px;
+            }
+
+            .planet-info {
+                width: 100%;
+                right: -100%;
+            }
+
+            .legend {
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--deep-space);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 1s ease-out 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; pointer-events: none; }
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 3px solid transparent;
+            border-top-color: var(--primary-glow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="starfield"></div>
+    
+    <div class="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <header>
+        <h1>Mapa Galáctico</h1>
+        <p class="subtitle">Star Wars Universe</p>
+    </header>
+
+    <div class="container">
+        <div class="galaxy-map" id="galaxyMap">
+            <svg class="routes-layer" style="position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
+                <!-- Rotas serão adicionadas aqui via JavaScript -->
+            </svg>
+            <div class="galaxy-core"></div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-section">
+                <div class="legend-title">Tipos de Planeta</div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=50&q=80'); background-size: cover;"></div>
+                    <span class="legend-label">Deserto</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: url('https://images.unsplash.com/photo-1483366774565-c783b9f70e2c?w=50&q=80'); background-size: cover;"></div>
+                    <span class="legend-label">Gelo</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=50&q=80'); background-size: cover;"></div>
+                    <span class="legend-label">Floresta</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=50&q=80'); background-size: cover;"></div>
+                    <span class="legend-label">Urbano</span>
+                </div>
+            </div>
+            
+            <div class="legend-section">
+                <div class="legend-title">Rotas Hiperespaciais</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255, 200, 100, 0.5); box-shadow: 0 0 8px rgba(255, 200, 100, 0.6);"></div>
+                    <span class="legend-label">Rota Principal</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(77, 166, 255, 0.4); box-shadow: 0 0 6px rgba(77, 166, 255, 0.5);"></div>
+                    <span class="legend-label">Rota Secundária</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="planet-info" id="planetInfo">
+        <div id="planetContent"></div>
+    </div>
+    <button class="close-btn" onclick="closePlanetInfo()">×</button>
+
+    <script>
+        const planetsData = [
+            {
+                name: 'TATOOINE',
+                region: 'Territórios Externos',
+                type: 'desert',
+                position: { x: 75, y: 60 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/tatooine-main_ab0d5b63.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_tatooine_01_169_68ba9bdc.jpeg',
+                climate: 'Árido',
+                terrain: 'Deserto com mares de dunas',
+                population: '200.000',
+                species: 'Humanos, Jawas, Tuskens',
+                affiliation: 'República / Império / Nova República',
+                history: 'Planeta desértico com dois sóis, berço de Anakin e Luke Skywalker. Local crucial na história da Força, onde tudo começou para os Skywalker. Palco de disputas entre Hutts e forças imperiais. Aqui, a saga começou e terminou.',
+                landmarks: 'Mos Eisley (porto espacial), Palácio de Jabba, Fazenda Lars, Cânion Jundland, Mos Espa',
+            },
+            {
+                name: 'CORUSCANT',
+                region: 'Mundos do Núcleo',
+                type: 'urban',
+                position: { x: 50, y: 50 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/Coruscant_03fb6e97.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_coruscant_01_169_1f7df6b8.jpeg',
+                climate: 'Temperado (controlado)',
+                terrain: 'Ecumenópole (cidade-planeta)',
+                population: '1 trilhão+',
+                species: 'Diversas espécies',
+                affiliation: 'República / Império / Nova República',
+                history: 'Capital da República Galáctica por milênios, sede do Templo Jedi e depois do Império. Centro político, econômico e cultural da galáxia. Palco da Ordem 66 e da queda dos Jedi. Uma única cidade cobrindo todo o planeta.',
+                landmarks: 'Templo Jedi, Senado Galáctico, Palácio Imperial, Níveis Inferiores (submundo), Distrito de Entretenimento',
+            },
+            {
+                name: 'HOTH',
+                region: 'Territórios Externos',
+                type: 'ice',
+                position: { x: 20, y: 30 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/hoth_2c096794.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_hoth_01_169_5c0e99d7.jpeg',
+                climate: 'Glacial extremo',
+                terrain: 'Tundra congelada, planícies de gelo',
+                population: 'Desabitado (exceto base rebelde)',
+                species: 'Wampas, Tauntauns',
+                affiliation: 'Aliança Rebelde',
+                history: 'Planeta de gelo que serviu como base secreta da Aliança Rebelde após a destruição da primeira Estrela da Morte. Palco da épica Batalha de Hoth, onde os rebeldes resistiram heroicamente ao ataque imperial com AT-ATs antes de evacuar para Dagobah.',
+                landmarks: 'Base Echo, Planícies de Gelo Norte, Cavernas Wampa, Perímetro Defensivo',
+            },
+            {
+                name: 'ENDOR',
+                region: 'Territórios Externos',
+                type: 'forest',
+                position: { x: 85, y: 45 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/endor_ba864df0.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_endor_01_169_747eca21.jpeg',
+                climate: 'Temperado',
+                terrain: 'Florestas densas de árvores gigantes',
+                population: '30 milhões (Ewoks)',
+                species: 'Ewoks',
+                affiliation: 'Aliança Rebelde',
+                history: 'Lua florestal habitada pelos primitivos mas corajosos Ewoks. Local da batalha final da Guerra Civil Galáctica, onde a segunda Estrela da Morte foi destruída e o Imperador Palpatine foi derrotado definitivamente por Darth Vader, trazendo equilíbrio à Força.',
+                landmarks: 'Vilas Ewok nas árvores, Gerador de Escudo Imperial, Plataforma de Aterrissagem, Ruínas da Estrela da Morte',
+            },
+            {
+                name: 'NABOO',
+                region: 'Borda Média',
+                type: 'ocean',
+                position: { x: 45, y: 65 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/naboo_2c2e2eda.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_naboo_01_169_61347450.jpeg',
+                climate: 'Temperado',
+                terrain: 'Planícies, oceanos, pântanos',
+                population: '600 milhões',
+                species: 'Humanos (Naboo), Gungans',
+                affiliation: 'República / Império',
+                history: 'Planeta pacífico de beleza extraordinária, lar da Rainha/Senadora Padmé Amidala. Invadido pela Federação de Comércio no início das Guerras Clônicas, foi o catalisador da ascensão de Palpatine ao poder. Possui civilizações na superfície e submersas.',
+                landmarks: 'Theed (capital), Gungan City (subaquática), Lago Country, Palácio Real, Planícies de Grama',
+            },
+            {
+                name: 'MUSTAFAR',
+                region: 'Territórios Externos',
+                type: 'volcanic',
+                position: { x: 80, y: 75 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/mustafar_c77c4c5b.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_mustafar_01_169_64007de0.jpeg',
+                climate: 'Extremamente quente',
+                terrain: 'Vulcânico, rios de lava',
+                population: 'Poucos milhares',
+                species: 'Mustafarianos',
+                affiliation: 'Separatistas / Império',
+                history: 'Mundo vulcânico infernal onde Anakin Skywalker foi derrotado por Obi-Wan Kenobi em um duelo épico, perdendo seus membros e sendo queimado, tornando-se Darth Vader. Sede de uma fortaleza Sith e do castelo sombrio de Vader.',
+                landmarks: 'Castelo de Vader, Instalações de Mineração, Campos de Lava, Plataformas de Coleta',
+            },
+            {
+                name: 'DAGOBAH',
+                region: 'Borda Externa',
+                type: 'swamp',
+                position: { x: 15, y: 70 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/dagobah_2187c2eb.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_dagobah_01_169_b4bb8275.jpeg',
+                climate: 'Úmido e nebuloso',
+                terrain: 'Pântanos densos',
+                population: 'Desabitado',
+                species: 'Fauna selvagem pantanosa',
+                affiliation: 'Neutro',
+                history: 'Planeta pantanoso remoto onde o Mestre Jedi Yoda se exilou após a execução da Ordem 66. Local do intenso treinamento de Luke Skywalker nos caminhos da Força. Rico em energia do Lado Luminoso, mas com uma caverna impregnada pelo Lado Sombrio.',
+                landmarks: 'Caverna do Lado Sombrio, Choupana de Yoda, Árvore Gnarltree, Lagoas Profundas',
+            },
+            {
+                name: 'BESPIN',
+                region: 'Borda Externa',
+                type: 'gas',
+                position: { x: 30, y: 55 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/bespin_2bc12084.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_cloudcity_01_169_8205ba16.jpeg',
+                climate: 'Temperado (nas cidades suspensas)',
+                terrain: 'Gigante gasoso',
+                population: '6 milhões',
+                species: 'Humanos, Ugnaughts',
+                affiliation: 'Neutro / Império',
+                history: 'Gigante gasoso lar da elegante Cidade das Nuvens, administrada por Lando Calrissian. Famoso por suas instalações de mineração de gás tibanna usado em blasters. Palco da traição de Lando (forçada) e captura de Han Solo pelo Império.',
+                landmarks: 'Cloud City, Plataformas de Mineração, Zona de Extração de Gás, Distrito Residencial',
+            },
+            {
+                name: 'KASHYYYK',
+                region: 'Borda Média',
+                type: 'forest',
+                position: { x: 40, y: 40 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/kashyyyk_c6c22170.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_kashyyyk_01_169_88f7f144.jpeg',
+                climate: 'Tropical úmido',
+                terrain: 'Florestas de árvores wroshyr gigantescas',
+                population: '45 milhões',
+                species: 'Wookiees',
+                affiliation: 'República',
+                history: 'Mundo natal dos nobres Wookiees, coberto por árvores wroshyr que atingem quilômetros de altura. Palco de batalha crucial durante as Guerras Clônicas. Os Wookiees foram cruelmente escravizados pelo Império. Lar do lendário Chewbacca.',
+                landmarks: 'Kachirho (cidade costeira), Árvores Wroshyr, Praias Tropicais, Níveis das Copas',
+            },
+            {
+                name: 'GEONOSIS',
+                region: 'Borda Externa',
+                type: 'desert',
+                position: { x: 70, y: 80 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/geonosis_c168335c.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_geonosis_01_169_c0e8c5d8.jpeg',
+                climate: 'Árido',
+                terrain: 'Deserto rochoso com formações estranhas',
+                population: '100 bilhões (Geonosianos)',
+                species: 'Geonosianos',
+                affiliation: 'Separatistas',
+                history: 'Planeta desértico onde as Guerras Clônicas começaram oficialmente com uma batalha massiva. Os Geonosianos, mestres construtores, projetaram a primeira Estrela da Morte. Suas colmeias subterrâneas abrigam fábricas de droides.',
+                landmarks: 'Arena Petranaki, Colmeias Geonosianas, Fábricas de Droides, Planícies Rochosas',
+            },
+            {
+                name: 'KAMINO',
+                region: 'Espaço Selvagem',
+                type: 'ocean',
+                position: { x: 10, y: 15 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/kamino_716897ea.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_kamino_01_169_f64f6982.jpeg',
+                climate: 'Tempestuoso',
+                terrain: 'Oceanos infinitos',
+                population: '1 bilhão',
+                species: 'Kaminoanos',
+                affiliation: 'República',
+                history: 'Mundo oceânico misterioso além da Borda Externa, removido dos arquivos Jedi por Count Dooku. Local onde o exército clone foi secretamente criado para a República. Os Kaminoanos são mestres absolutos em clonagem e engenharia genética.',
+                landmarks: 'Tipoca City (sobre palafitas), Centros de Clonagem, Plataformas Oceânicas, Laboratórios Genéticos',
+            },
+            {
+                name: 'ALDERAAN',
+                region: 'Mundos do Núcleo',
+                type: 'peaceful',
+                position: { x: 55, y: 45 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/alderaan-main_f5b1a8ed.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_alderaan_01_169_9bdc8b90.jpeg',
+                climate: 'Temperado perfeito',
+                terrain: 'Planícies, montanhas, mares',
+                population: '2 bilhões (DESTRUÍDO)',
+                species: 'Humanos',
+                affiliation: 'República / Aliança Rebelde',
+                history: 'Planeta pacífico e culturalmente rico, conhecido por sua beleza natural e diplomacia. Lar da Princesa Leia Organa. Foi completamente destruído pela primeira Estrela da Morte como demonstração brutal de poder do Império, tornando-se símbolo eterno da tirania imperial.',
+                landmarks: 'Aldera (capital), Cordilheiras Nevadas, Campos de Grama, Universidade de Aldera (DESTRUÍDOS)',
+            },
+            {
+                name: 'JAKKU',
+                region: 'Territórios Externos',
+                type: 'desert',
+                position: { x: 78, y: 25 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/jakku_17c32079.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_jakku_01_169_ca7c9cc1.jpeg',
+                climate: 'Árido extremo',
+                terrain: 'Deserto com destroços de naves',
+                population: 'Poucos milhares',
+                species: 'Humanos, sucateiros',
+                affiliation: 'Neutro',
+                history: 'Planeta desértico remoto que foi palco da batalha final entre o Império e a Nova República. Coberto por destroços de Star Destroyers e outras naves da guerra. Lar de Rey antes de descobrir seu destino Jedi.',
+                landmarks: 'Campo de Destroços, Posto de Niima, Destroços de Star Destroyers, Assentamento de Tuanul',
+            },
+            {
+                name: 'SCARIF',
+                region: 'Territórios Externos',
+                type: 'tropical',
+                position: { x: 72, y: 68 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/scarif_76b7548e.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_scarif_01_169_e686d82e.jpeg',
+                climate: 'Tropical',
+                terrain: 'Ilhas tropicais, praias',
+                population: 'Poucos milhares (militar)',
+                species: 'Humanos',
+                affiliation: 'Império',
+                history: 'Paraíso tropical que foi transformado em base imperial ultrassecreta. Guardava os planos da Estrela da Morte em seus arquivos. Palco da Batalha de Scarif onde a Aliança Rebelde roubou os planos, sacrificando muitos heróis.',
+                landmarks: 'Cidadela (centro de dados), Portão de Escudo, Praias Tropicais, Torre de Comunicações',
+            },
+            {
+                name: 'MANDALORE',
+                region: 'Territórios Externos',
+                type: 'desert',
+                position: { x: 35, y: 38 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/mandalore_1051ce13.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_mandalore_01_169_b3421cf0.jpeg',
+                climate: 'Árido (pós-guerra)',
+                terrain: 'Desertos vítreos, cidades cúpula',
+                population: '4 milhões',
+                species: 'Mandalorianos (humanos)',
+                affiliation: 'Neutro / Império',
+                history: 'Mundo natal dos lendários guerreiros Mandalorianos. Devastado por guerras antigas, sua superfície foi transformada em desertos brancos. Sob ocupação imperial, resistiu através de clãs secretos. Lar de Din Djarin e Boba Fett.',
+                landmarks: 'Sundari (capital sob cúpula), Minas de Beskar, Deserto Vítreo, Fortaleza Mandaloriana',
+            },
+            {
+                name: 'YAVIN IV',
+                region: 'Borda Externa',
+                type: 'jungle',
+                position: { x: 82, y: 52 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/yavin-4-main_c7e8120d.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_yaviniv_01_169_d0096294.jpeg',
+                climate: 'Tropical úmido',
+                terrain: 'Selvas densas, templos antigos',
+                population: 'Desabitado (exceto base)',
+                species: 'Fauna selvagem',
+                affiliation: 'Aliança Rebelde',
+                history: 'Lua de selva habitada por ruínas de templos Massassi antigos. Serviu como base principal da Aliança Rebelde. Foi daqui que os X-wings decolaram para destruir a primeira Estrela da Morte, marcando a primeira grande vitória rebelde.',
+                landmarks: 'Grande Templo (Base Rebelde), Templos Massassi, Selvas Densas, Hangares Rebeldes',
+            },
+            {
+                name: 'LOTHAL',
+                region: 'Territórios Externos',
+                type: 'grassland',
+                position: { x: 63, y: 42 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/lothal-main_1571d6da.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_lothal_01_169_67897af9.jpeg',
+                climate: 'Temperado',
+                terrain: 'Planícies de grama, planaltos',
+                population: '12 milhões',
+                species: 'Humanos, Lothcats',
+                affiliation: 'Império / Rebeldes',
+                history: 'Planeta de planícies que foi ocupado pelo Império para exploração. Berço do movimento rebelde liderado pela tripulação do Ghost. Ezra Bridger e Kanan Jarrus treinaram aqui. Possui um templo Jedi oculto e conexões profundas com a Força.',
+                landmarks: 'Capital City, Templo Jedi, Planícies do Norte, Fábrica Imperial',
+            },
+            {
+                name: 'TAKODANA',
+                region: 'Territórios do Meio',
+                type: 'forest',
+                position: { x: 58, y: 58 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/takodana_ba8d8844.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_takodana_01_169_75acfe54.jpeg',
+                climate: 'Temperado úmido',
+                terrain: 'Lagos, florestas',
+                population: 'Poucos milhares',
+                species: 'Diversas',
+                affiliation: 'Neutro',
+                history: 'Planeta neutro coberto por lagos e florestas antigas. Lar do Castelo de Maz Kanata, um refúgio para viajantes, contrabandistas e aqueles que buscam sabedoria. Foi aqui que Rey encontrou o sabre de luz de Luke Skywalker.',
+                landmarks: 'Castelo de Maz Kanata, Lagos Espelhados, Florestas Antigas, Porto de Desembarque',
+            },
+            {
+                name: 'CRAIT',
+                region: 'Territórios Externos',
+                type: 'salt',
+                position: { x: 88, y: 62 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/crait_3673812f.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_crait_01_169_3ea0ffbf.jpeg',
+                climate: 'Árido',
+                terrain: 'Planícies de sal branco',
+                population: 'Desabitado',
+                species: 'Cristais-raposa',
+                affiliation: 'Resistência',
+                history: 'Planeta mineral remoto coberto por sal branco sobre solo vermelho. Abrigou antiga base rebelde abandonada. Foi o local do confronto final entre a Resistência e a Primeira Ordem, onde Luke Skywalker se sacrificou para salvar a galáxia.',
+                landmarks: 'Base Rebelde Abandonada, Planícies de Sal, Trincheiras Naturais, Minas de Cristal',
+            },
+            {
+                name: 'EXEGOL',
+                region: 'Regiões Desconhecidas',
+                type: 'dark',
+                position: { x: 92, y: 35 },
+                image: 'https://lumiere-a.akamaihd.net/v1/images/exegol_449b3a63.jpeg',
+                heroImage: 'https://lumiere-a.akamaihd.net/v1/images/databank_exegol_01_169_58cdc1b3.jpeg',
+                climate: 'Tempestuoso perpétuo',
+                terrain: 'Deserto rochoso, tempestades',
+                population: 'Desconhecido',
+                species: 'Cultistas Sith',
+                affiliation: 'Império Sith Final',
+                history: 'Mundo oculto nas Regiões Desconhecidas, escondido por tempestades perpétuas. Refugio secreto do Imperador Palpatine ressuscitado e local da Frota Sith Eterna. Aqui, a saga Skywalker teve seu confronto final entre Rey e Palpatine.',
+                landmarks: 'Cidadela Sith, Frota Eterna, Tempestades Vermelhas, Trono do Imperador',
+            }
+        ];
+
+        // Rotas hiperespaciais (conectando planetas importantes)
+        const hyperspaceRoutes = [
+            // Rota de Comércio Principal (Corellian Run)
+            { from: 'CORUSCANT', to: 'CORELLIA', type: 'major' },
+            { from: 'CORELLIA', to: 'NABOO', type: 'major' },
+            { from: 'NABOO', to: 'TATOOINE', type: 'major' },
+            
+            // Hydian Way
+            { from: 'CORUSCANT', to: 'ALDERAAN', type: 'major' },
+            { from: 'ALDERAAN', to: 'KASHYYYK', type: 'major' },
+            { from: 'KASHYYYK', to: 'GEONOSIS', type: 'major' },
+            
+            // Rotas Secundárias
+            { from: 'HOTH', to: 'BESPIN', type: 'secondary' },
+            { from: 'BESPIN', to: 'DAGOBAH', type: 'secondary' },
+            { from: 'TATOOINE', to: 'GEONOSIS', type: 'secondary' },
+            { from: 'ENDOR', to: 'CORUSCANT', type: 'secondary' },
+            { from: 'MUSTAFAR', to: 'GEONOSIS', type: 'secondary' },
+            { from: 'YAVIN IV', to: 'ENDOR', type: 'secondary' },
+            { from: 'JAKKU', to: 'TATOOINE', type: 'secondary' },
+            { from: 'SCARIF', to: 'YAVIN IV', type: 'secondary' },
+            { from: 'LOTHAL', to: 'CORUSCANT', type: 'secondary' },
+            { from: 'MANDALORE', to: 'CORUSCANT', type: 'secondary' },
+            { from: 'TAKODANA', to: 'CORUSCANT', type: 'secondary' },
+            { from: 'CRAIT', to: 'ENDOR', type: 'secondary' },
+        ];
+
+        const galaxyMap = document.getElementById('galaxyMap');
+        const planetInfo = document.getElementById('planetInfo');
+        const planetContent = document.getElementById('planetContent');
+        const routesLayer = document.querySelector('.routes-layer');
+
+        // Função para desenhar rotas
+        function drawRoutes() {
+            const mapRect = galaxyMap.getBoundingClientRect();
+            
+            hyperspaceRoutes.forEach(route => {
+                const fromPlanet = planetsData.find(p => p.name === route.from);
+                const toPlanet = planetsData.find(p => p.name === route.to);
+                
+                if (fromPlanet && toPlanet) {
+                    const x1 = (fromPlanet.position.x / 100) * mapRect.width;
+                    const y1 = (fromPlanet.position.y / 100) * mapRect.height;
+                    const x2 = (toPlanet.position.x / 100) * mapRect.width;
+                    const y2 = (toPlanet.position.y / 100) * mapRect.height;
+                    
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', x1);
+                    line.setAttribute('y1', y1);
+                    line.setAttribute('x2', x2);
+                    line.setAttribute('y2', y2);
+                    line.setAttribute('class', `route ${route.type}`);
+                    
+                    routesLayer.appendChild(line);
+                }
+            });
+        }
+
+        // Criar planetas
+        planetsData.forEach((planet, index) => {
+            const planetEl = document.createElement('div');
+            planetEl.className = `planet ${planet.type}`;
+            planetEl.setAttribute('data-name', planet.name);
+            planetEl.style.left = `${planet.position.x}%`;
+            planetEl.style.top = `${planet.position.y}%`;
+            planetEl.style.backgroundImage = `url(${planet.image})`;
+            planetEl.style.animationDelay = `${Math.random() * 3}s`;
+            
+            planetEl.addEventListener('click', () => showPlanetInfo(planet));
+            galaxyMap.appendChild(planetEl);
+        });
+
+        // Desenhar rotas após planetas
+        drawRoutes();
+
+        function showPlanetInfo(planet) {
+            planetContent.innerHTML = `
+                <div class="planet-hero-image" style="background-image: url(${planet.heroImage});">
+                </div>
+                
+                <div class="planet-content-wrapper">
+                    <div class="planet-header">
+                        <h2 class="planet-name">${planet.name}</h2>
+                        <p class="planet-region">${planet.region}</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Características</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Clima</div>
+                                <div class="info-value">${planet.climate}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Terreno</div>
+                                <div class="info-value">${planet.terrain}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">População</div>
+                                <div class="info-value">${planet.population}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Espécies</div>
+                                <div class="info-value">${planet.species}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Alinhamento Político</h3>
+                        <p class="info-text">${planet.affiliation}</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Importância Histórica</h3>
+                        <p class="info-text">${planet.history}</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Localizações Importantes</h3>
+                        <p class="info-text">${planet.landmarks}</p>
+                        <div class="mini-map">
+                            <div class="mini-map-grid"></div>
+                            <div class="mini-map-content">
+                                <strong>${planet.name}</strong><br>
+                                <small>${planet.landmarks.split(',')[0]}</small><br>
+                                <small style="opacity: 0.7;">e outras regiões estratégicas</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            planetInfo.classList.add('active');
+        }
+
+        function closePlanetInfo() {
+            planetInfo.classList.remove('active');
+        }
+
+        // Close panel on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePlanetInfo();
+        });
+
+        // Redesenhar rotas ao redimensionar
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                routesLayer.innerHTML = '';
+                drawRoutes();
+            }, 250);
+        });
+    </script>
+</body>
+</html>
