@@ -1,14 +1,19 @@
-planetsData.forEach(planet => {
-  const sprite = PIXI.Sprite.from(planet.image);
-  sprite.anchor.set(0.5);
-  sprite.x = planet.x;
-  sprite.y = planet.y;
-  sprite.interactive = true;
-  sprite.buttonMode = true;
+planetsData.forEach(p => {
+  const planet = new PIXI.Graphics();
 
-  sprite.on("pointerdown", () => {
-    console.log("Planeta:", planet.name);
+  planet.beginFill(0x00ffff);
+  planet.drawCircle(0, 0, 12);
+  planet.endFill();
+
+  planet.x = p.x;
+  planet.y = p.y;
+
+  planet.interactive = true;
+  planet.buttonMode = true;
+
+  planet.on("pointerdown", () => {
+    openPlanetPanel(p);
   });
 
-  galaxy.addChild(sprite);
+  galaxy.addChild(planet);
 });
