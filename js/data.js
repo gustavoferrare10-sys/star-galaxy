@@ -1,20 +1,4 @@
 const planetsData = [
-  {
-    name: "Tatooine",
-    x: -300,
-    y: 200,
-    region: "Outer Rim",
-    description: "Planeta desértico, lar de Luke Skywalker.",
-    image: "assets/planets/tatooine.png",
-    minimap: "assets/maps/tatooine-map.png"
-  },
-  {
-    name: "Coruscant",
-    x: 150,
-    y: -100,
-    region: "Core Worlds",
-    description: "Capital da República e do Império.",
-    image: "assets/planets/coruscant.png",
-    minimap: "assets/maps/coruscant-map.png"
-  }
+  { name: "Teste 1", x: 100, y: 0, region: "Teste", description: "Ok" },
+  { name: "Teste 2", x: -150, y: 80, region: "Teste", description: "Ok" }
 ];
