@@ -13,3 +13,4 @@ app.stage.addChild(galaxy);
 // Centraliza o mapa
 galaxy.x = app.screen.width / 2;
 galaxy.y = app.screen.height / 2;
+galaxy.scale.set(1);
