@@ -35,30 +35,55 @@ body {
   background: none;
   border: none;
   color: #0ff;
-  font-size: 18px;
+  font-size: 24px;
   cursor: pointer;
   float: right;
+  padding: 5px 10px;
+  transition: transform 0.2s;
+}
+
+#close-panel:hover {
+  transform: scale(1.2);
 }
 
 #planet-region {
   color: #0ff;
   font-size: 14px;
   margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-#planet-panel {
+#filters {
   position: fixed;
-  right: 20px;
   top: 20px;
-  width: 300px;
-  background: rgba(0,0,0,0.85);
+  left: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+}
+
+#filters button {
+  background: rgba(0, 255, 255, 0.1);
   border: 1px solid #0ff;
-  padding: 15px;
   color: #0ff;
+  padding: 10px 20px;
+  cursor: pointer;
   font-family: Arial;
+  transition: all 0.3s;
+  border-radius: 4px;
+}
+
+#filters button:hover {
+  background: rgba(0, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 255, 0.4);
+}
+
+#filters button:active {
+  transform: translateY(0);
 }
 
 .hidden {
   display: none;
 }
-
