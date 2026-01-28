@@ -6,7 +6,7 @@ function openPlanetPanel(planet) {
   document.getElementById("planet-description").innerText = planet.description;
 
   document.getElementById("planet-image").src = planet.image;
-  document.getElementById("planet-minimap").src = planet.minimap;
+  document.getElementById("planet-minimap").src = planet.minimap || planet.image;
 
   panel.classList.remove("hidden");
 }
