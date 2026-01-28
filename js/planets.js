@@ -51,3 +51,13 @@ planetsData.forEach(p => {
   galaxy.addChild(planet);
 });
 
+const label = new PIXI.Text(p.name, {
+  fontFamily: "Arial",
+  fontSize: 14,
+  fill: 0x00ffff
+});
+
+label.anchor.set(0.5);
+label.y = -35;
+planet.addChild(label);
+
