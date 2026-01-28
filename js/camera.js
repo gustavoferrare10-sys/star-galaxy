@@ -1,4 +1,3 @@
-
 let dragging = false;
 
 // segurança: evita erro se parallax ainda não carregou
@@ -26,7 +25,7 @@ app.view.addEventListener("mousemove", e => {
   galaxy.x += dx;
   galaxy.y += dy;
 
-  // 🌠 parallax (se existir)
+  // parallax (se existir)
   if (hasParallax()) {
     window.starLayers.forEach(layer => {
       layer.x += dx * layer.speed;
@@ -42,5 +41,3 @@ app.view.addEventListener("wheel", e => {
   galaxy.scale.x *= zoomFactor;
   galaxy.scale.y *= zoomFactor;
 }, { passive: false });
-
-
