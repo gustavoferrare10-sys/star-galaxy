@@ -1,7 +1,4 @@
 console.log("PLANETS.JS CARREGADO");
-if (!window.galaxy) {
-  throw new Error("galaxy não foi inicializado");
-}
 
 
 window.allPlanets = [];
@@ -110,6 +107,7 @@ window.allPlanets.push(planetContainer);
   });
 
 });
+
 
 
 
