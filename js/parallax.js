@@ -1,8 +1,4 @@
 console.log("PARALLAX CARREGADO");
-if (!window.galaxy) {
-  throw new Error("galaxy não foi inicializado");
-}
-
 
 const starLayers = [];
 
