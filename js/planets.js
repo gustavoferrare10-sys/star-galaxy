@@ -1,74 +1,63 @@
 console.log("PLANETS.JS CARREGADO");
-console.log("planetsData =", window.planetsData);
 
 if (!window.planetsData || window.planetsData.length === 0) {
-  console.error("planetsData NÃO encontrado ou vazio");
+  console.error("planetsData não encontrado");
 }
 
 window.planetsData.forEach(p => {
 
-  if (!p.image) return;
+  // 🧱 Container do planeta
+  const planetContainer = new PIXI.Container();
+  planetContainer.x = p.x;
+  planetContainer.y = p.y;
+  planetContainer.interactive = true;
+  planetContainer.cursor = "pointer";
 
+  galaxy.addChild(planetContainer);
+
+  // 🪐 Sprite do planeta
   const texture = PIXI.Texture.from(p.image);
-  const planet = new PIXI.Sprite(texture);
+  const planetSprite = new PIXI.Sprite(texture);
+  planetSprite.anchor.set(0.5);
+  planetSprite.scale.set(0.15); // escala fixa e segura
+  planetSprite.interactive = false;
 
-  planet.anchor.set(0.5);
-  planet.x = p.x;
-  planet.y = p.y;
+  planetContainer.addChild(planetSprite);
 
-  planet.interactive = true;
-  planet.cursor = "pointer";
+  // 🔘 Área de clique (invisível)
+  const HIT_RADIUS = 50;
+  const hitCircle = new PIXI.Graphics();
+  hitCircle.beginFill(0xff0000, 0); // invisível
+  hitCircle.drawCircle(0, 0, HIT_RADIUS);
+  hitCircle.endFill();
 
-  galaxy.addChild(planet);
+  planetContainer.hitArea = new PIXI.Circle(0, 0, HIT_RADIUS);
+  planetContainer.addChild(hitCircle);
 
-  // 🔹 Nome (criado antes)
+  // 🔤 Nome do planeta (abaixo)
   const label = new PIXI.Text(p.name, {
     fontFamily: "Arial",
     fontSize: 14,
     fill: 0x00ffff
   });
   label.anchor.set(0.5);
+  label.y = HIT_RADIUS + 12;
   label.interactive = false;
-  planet.addChild(label);
 
-  function applyScale() {
-    const TARGET_SIZE = 80;
+  planetContainer.addChild(label);
 
-    const maxDimension = Math.max(
-      texture.width,
-      texture.height
-    );
-
-    const scale = TARGET_SIZE / maxDimension;
-    planet.scale.set(scale);
-
-    planet.hitArea = new PIXI.Circle(0, 0, TARGET_SIZE / 2);
-    planet.__baseScale = scale;
-
-    // 🔹 nome abaixo do planeta
-    label.y = TARGET_SIZE / 2 + 12;
-  }
-
-  if (texture.baseTexture.valid) {
-    applyScale();
-  } else {
-    texture.baseTexture.once("loaded", applyScale);
-  }
-
-  // 🔹 Hover
-  planet.on("pointerover", () => {
-    planet.scale.set(planet.__baseScale * 1.1);
+  // ✨ Hover
+  planetContainer.on("pointerover", () => {
+    planetSprite.scale.set(0.17);
   });
 
-  planet.on("pointerout", () => {
-    planet.scale.set(planet.__baseScale);
+  planetContainer.on("pointerout", () => {
+    planetSprite.scale.set(0.15);
   });
 
-  // 🔹 Clique
-  planet.on("pointerdown", () => {
-    console.log("CLIQUE:", p.name);
-    // futuramente: abrir painel
+  // 🖱️ Clique
+  planetContainer.on("pointerdown", () => {
+    console.log("CLIQUE FUNCIONANDO:", p.name);
   });
 
 });
-
