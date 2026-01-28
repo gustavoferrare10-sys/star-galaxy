@@ -1,7 +1,45 @@
-planetContainer.on("pointerdown", () => {
-  openPlanetPanel(p);
-});
+console.log("PLANETS.JS CARREGADO");
 
+window.allPlanets = [];
+
+window.planetsData.forEach(p => {
+
+  const planetContainer = new PIXI.Container();
+  planetContainer.x = p.x;
+  planetContainer.y = p.y;
+  planetContainer.region = p.region;
+  planetContainer.interactive = true;
+  planetContainer.cursor = "pointer";
+
+  galaxy.addChild(planetContainer);
+  window.allPlanets.push(planetContainer);
+
+  const texture = PIXI.Texture.from(p.image);
+  const sprite = new PIXI.Sprite(texture);
+  sprite.anchor.set(0.5);
+  sprite.scale.set(0.15);
+  sprite.interactive = false;
+
+  planetContainer.addChild(sprite);
+
+  const HIT_RADIUS = 50;
+  planetContainer.hitArea = new PIXI.Circle(0, 0, HIT_RADIUS);
+
+  const label = new PIXI.Text(p.name, {
+    fontSize: 14,
+    fill: 0x00ffff
+  });
+  label.anchor.set(0.5);
+  label.y = HIT_RADIUS + 12;
+  label.interactive = false;
+
+  planetContainer.addChild(label);
+
+  planetContainer.on("pointerdown", () => {
+    openPlanetPanel(p);
+  });
+
+});
 
 if (!window.planetsData || window.planetsData.length === 0) {
   console.error("planetsData não encontrado");
@@ -68,5 +106,6 @@ window.allPlanets.push(planetContainer);
   });
 
 });
+
 
 
