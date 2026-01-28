@@ -9,7 +9,7 @@ window.planetsData.forEach((p, i) => {
   const planet = new PIXI.Graphics();
 
   planet.beginFill(0x00ffff);
-  planet.drawCircle(0, 0, 12);
+  planet.drawCircle(0, 0, 25);
   planet.endFill();
 
   planet.x = p.x;
@@ -19,3 +19,4 @@ window.planetsData.forEach((p, i) => {
 
   console.log("Planeta criado:", p.name);
 });
+
