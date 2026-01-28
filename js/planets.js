@@ -21,9 +21,7 @@ window.planetsData.forEach(p => {
 
   galaxy.addChild(planet);
 
-  // 🔹 ESPERA A TEXTURA CARREGAR
-  texture.baseTexture.once("loaded", () => {
-
+  function applyScale() {
     const TARGET_SIZE = 80;
 
     const maxDimension = Math.max(
@@ -35,19 +33,31 @@ window.planetsData.forEach(p => {
     planet.scale.set(scale);
 
     planet.hitArea = new PIXI.Circle(0, 0, TARGET_SIZE / 2);
-  });
 
-  // 🔹 Hover (funciona depois do scale)
+    planet.__baseScale = scale; // salva escala base
+  }
+
+  // 🔹 Caso 1: já carregou
+  if (texture.baseTexture.valid) {
+    applyScale();
+  } 
+  // 🔹 Caso 2: ainda vai carregar
+  else {
+    texture.baseTexture.once("loaded", applyScale);
+  }
+
+  // 🔹 Hover
   planet.on("pointerover", () => {
-    planet.scale.set(planet.scale.x * 1.1);
+    planet.scale.set(planet.__baseScale * 1.1);
   });
 
   planet.on("pointerout", () => {
-    planet.scale.set(planet.scale.x / 1.1);
+    planet.scale.set(planet.__baseScale);
   });
 
   // 🔹 Nome
   const label = new PIXI.Text(p.name, {
+    fontFamily: "Arial",
     fontSize: 14,
     fill: 0x00ffff
   });
@@ -55,8 +65,5 @@ window.planetsData.forEach(p => {
   label.y = -50;
   planet.addChild(label);
 
-});
-
-  console.log("Sprite criado:", p.name);
 });
 
