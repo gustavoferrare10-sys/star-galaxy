@@ -1,11 +1,19 @@
-console.log("PLANETS.JS FOI CARREGADO");
+planetsData.forEach(p => {
+  const planet = new PIXI.Graphics();
 
-const testPlanet = new PIXI.Graphics();
-testPlanet.beginFill(0x00ffff);
-testPlanet.drawCircle(0, 0, 15);
-testPlanet.endFill();
+  planet.beginFill(0x00ffff);
+  planet.drawCircle(0, 0, 12);
+  planet.endFill();
 
-testPlanet.x = 100;
-testPlanet.y = 0;
+  planet.x = p.x;
+  planet.y = p.y;
 
-galaxy.addChild(testPlanet);
+  planet.interactive = true;
+  planet.buttonMode = true;
+
+  planet.on("pointerdown", () => {
+    openPlanetPanel(p);
+  });
+
+  galaxy.addChild(planet);
+});
