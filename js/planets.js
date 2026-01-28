@@ -18,21 +18,29 @@ window.planetsData.forEach(p => {
   planet.anchor.set(0.5);
   planet.x = p.x;
   planet.y = p.y;
-  planet.scale.set(0.3);
+
+  // 🔹 TAMANHO PADRÃO (resolve planetas gigantes)
+  const TARGET_SIZE = 80;
+  const maxDimension = Math.max(texture.width, texture.height);
+  const scale = TARGET_SIZE / maxDimension;
+  planet.scale.set(scale);
+
+  // 🔹 ÁREA CLICÁVEL (resolve clique quebrado)
+  planet.hitArea = new PIXI.Circle(0, 0, TARGET_SIZE / 2);
 
   planet.interactive = true;
   planet.buttonMode = true;
 
-  // Hover
+  // 🔹 Hover
   planet.on("pointerover", () => {
-    planet.scale.set(0.35);
+    planet.scale.set(scale * 1.1);
   });
 
   planet.on("pointerout", () => {
-    planet.scale.set(0.3);
+    planet.scale.set(scale);
   });
 
-  // Nome do planeta
+  // 🔹 Nome do planeta
   const label = new PIXI.Text(p.name, {
     fontFamily: "Arial",
     fontSize: 14,
