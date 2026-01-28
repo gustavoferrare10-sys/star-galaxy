@@ -1,3 +1,7 @@
+if (!window.app || !window.galaxy) {
+  throw new Error("app ou galaxy não inicializados");
+}
+
 let dragging = false;
 
 // segurança: evita erro se parallax ainda não carregou
@@ -41,3 +45,4 @@ app.view.addEventListener("wheel", e => {
   galaxy.scale.x *= zoomFactor;
   galaxy.scale.y *= zoomFactor;
 }, { passive: false });
+
