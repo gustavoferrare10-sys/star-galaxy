@@ -1,4 +1,7 @@
-console.log("PLANETS.JS CARREGADO");
+planetContainer.on("pointerdown", () => {
+  openPlanetPanel(p);
+});
+
 
 if (!window.planetsData || window.planetsData.length === 0) {
   console.error("planetsData não encontrado");
@@ -65,4 +68,5 @@ window.allPlanets.push(planetContainer);
   });
 
 });
+
 
