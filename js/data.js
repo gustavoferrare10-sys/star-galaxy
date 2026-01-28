@@ -1,4 +1,5 @@
-const planetsData = [
-  { name: "Teste 1", x: 100, y: 0, region: "Teste", description: "Ok" },
-  { name: "Teste 2", x: -150, y: 80, region: "Teste", description: "Ok" }
+window.planetsData = [
+  { name: "Tatooine", x: -300, y: 150, region: "Outer Rim", description: "Planeta desértico." },
+  { name: "Coruscant", x: 200, y: -100, region: "Core Worlds", description: "Capital galáctica." },
+  { name: "Naboo", x: -50, y: -200, region: "Mid Rim", description: "Planeta aquático." }
 ];
