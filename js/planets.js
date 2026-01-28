@@ -23,6 +23,10 @@ window.planetsData.forEach(p => {
   planetSprite.interactive = false;
 
   planetContainer.addChild(planetSprite);
+  planetContainer.region = p.region;
+window.allPlanets = window.allPlanets || [];
+window.allPlanets.push(planetContainer);
+
 
   // 🔘 Área de clique (invisível)
   const HIT_RADIUS = 50;
@@ -61,3 +65,4 @@ window.planetsData.forEach(p => {
   });
 
 });
+
