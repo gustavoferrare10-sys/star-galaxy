@@ -17,9 +17,19 @@ window.planetsData.forEach(p => {
   planet.y = p.y;
 
   planet.interactive = true;
-  planet.buttonMode = true;
+  planet.cursor = "pointer";
 
   galaxy.addChild(planet);
+
+  // 🔹 Nome (criado antes)
+  const label = new PIXI.Text(p.name, {
+    fontFamily: "Arial",
+    fontSize: 14,
+    fill: 0x00ffff
+  });
+  label.anchor.set(0.5);
+  label.interactive = false;
+  planet.addChild(label);
 
   function applyScale() {
     const TARGET_SIZE = 80;
@@ -33,16 +43,15 @@ window.planetsData.forEach(p => {
     planet.scale.set(scale);
 
     planet.hitArea = new PIXI.Circle(0, 0, TARGET_SIZE / 2);
+    planet.__baseScale = scale;
 
-    planet.__baseScale = scale; // salva escala base
+    // 🔹 nome abaixo do planeta
+    label.y = TARGET_SIZE / 2 + 12;
   }
 
-  // 🔹 Caso 1: já carregou
   if (texture.baseTexture.valid) {
     applyScale();
-  } 
-  // 🔹 Caso 2: ainda vai carregar
-  else {
+  } else {
     texture.baseTexture.once("loaded", applyScale);
   }
 
@@ -55,15 +64,11 @@ window.planetsData.forEach(p => {
     planet.scale.set(planet.__baseScale);
   });
 
-  // 🔹 Nome
-  const label = new PIXI.Text(p.name, {
-    fontFamily: "Arial",
-    fontSize: 14,
-    fill: 0x00ffff
+  // 🔹 Clique
+  planet.on("pointerdown", () => {
+    console.log("CLIQUE:", p.name);
+    // futuramente: abrir painel
   });
-  label.anchor.set(0.5);
-  label.y = -50;
-  planet.addChild(label);
 
 });
 
