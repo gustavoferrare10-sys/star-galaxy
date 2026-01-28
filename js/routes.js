@@ -1,4 +1,8 @@
 console.log("ROTAS CARREGADAS");
+if (!window.galaxy) {
+  throw new Error("galaxy não foi inicializado");
+}
+
 
 const routes = new PIXI.Graphics();
 galaxy.addChild(routes);
